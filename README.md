@@ -1,5 +1,3 @@
-# RoadRescue — On-Road Vehicle Breakdown Help Assistance
-
 RoadRescue connects a stranded driver (**Customer**) with a nearby mechanic/two operator (**Helper**) in real time as a **Spring Boot + MySQL + HTML/CSS/JS** web application, named **RoadRescue**, with a designed professional UI and three main features:
 1. **Live map tracking** — the helper's pin moves on the customer's map in real time (Google Maps JS API + WebSocket).
 2. **In-app chat** — customer and helper message each other directly on the request page (WebSocket/STOMP).
@@ -146,26 +144,52 @@ If all of that works, the app is running correctly on your machine.
 
 ## Customer Registration Page
 
+<img width="960" height="540" alt="Customer Registration Page" src="https://github.com/user-attachments/assets/2c133f13-def4-4591-a9f2-2229bd25a6f2" />
+
 ## Helper Registration Page
+
+<img width="960" height="540" alt="Helper Registration Page" src="https://github.com/user-attachments/assets/13134779-bd0e-4dd1-928f-9e337479120e" />
 
 ## Login Page
 
+<img width="960" height="540" alt="Login Page" src="https://github.com/user-attachments/assets/a42c3258-6a3d-4ed3-8335-26499634aa69" />
+
 ## Customer Dashboard
+
+<img width="960" height="540" alt="Customer Dashboard" src="https://github.com/user-attachments/assets/c638dafd-2e01-49ba-ba6a-20e3affdce69" />
 
 ## Helper Dashboard
 
+<img width="960" height="540" alt="Helper Dashboard" src="https://github.com/user-attachments/assets/8f24357d-042f-485f-a4ae-069472664abf" />
+
 ## Customer request
+
+<img width="960" height="540" alt="Customer Request" src="https://github.com/user-attachments/assets/1cf852de-7acf-4bc2-976c-40210f5fa668" />
 
 ## Helper response
 
+<img width="960" height="540" alt="Helper Response" src="https://github.com/user-attachments/assets/57600b8f-439d-48ce-ad1a-8e5fefc61f10" />
+
 ## Customer Chat
+
+<img width="960" height="540" alt="Customer Chat" src="https://github.com/user-attachments/assets/3ca28673-cc8f-4ffe-b782-ef5ff27e916a" />
 
 ## Helper chat
 
+<img width="960" height="540" alt="Helper Chat" src="https://github.com/user-attachments/assets/3b36aad2-40da-4c7c-b584-ba7208558409" />
+
 ## Customer Delivery Completed 
+
+<img width="960" height="540" alt="Customer Delivery Completed" src="https://github.com/user-attachments/assets/53208d20-4c5d-4379-bf57-3ebb570928cd" />
 
 ## Helper delivery Completed
 
+<img width="960" height="540" alt="Helper Delivery Completed" src="https://github.com/user-attachments/assets/8dde7080-e188-4fe6-b382-bc028975e2e2" />
+
 ## Customer Rating
 
+<img width="960" height="540" alt="Customer Rating" src="https://github.com/user-attachments/assets/4210f471-bcd5-449e-841e-11c43e13d07b" />
+
 ## Backend
+
+<img width="960" height="540" alt="Backend" src="https://github.com/user-attachments/assets/7c1dd1ee-ac9f-4255-bc71-df1f3fb9837d" />
