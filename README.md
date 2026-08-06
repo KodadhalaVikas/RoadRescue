@@ -128,32 +128,9 @@ Now the actual flow:
 7. Window A (Customer): the rating form appears — submit stars + a review.
 
 If all of that works, the app is running correctly on your machine.
-
 ---
 
-## 6. Pushing to GitHub (one folder, VS Code)
-
-1. In VS Code's integrated terminal, from inside the `RoadRescue` folder:
-```bash
-git init
-git add .
-git commit -m "Initial commit: RoadRescue web edition"
-```
-2. Create a new **empty** repository on GitHub (no README/license, so there's no merge
-   conflict) — name it e.g. `RoadRescue`.
-3. Connect and push:
-```bash
-git remote add origin https://github.com/YOUR_USERNAME/RoadRescue.git
-git branch -M main
-git push -u origin main
-```
-4. Double-check `application.properties` is **not** in the pushed files (only
-   `application.properties.example` should appear on GitHub) — that's what keeps your
-   MySQL password and Maps API key private.
-
----
-
-## 7. Troubleshooting
+## 6. Troubleshooting
 
 - **"Access denied for user 'root'@'localhost'"** → your MySQL password in
   `application.properties` is wrong.
@@ -165,7 +142,7 @@ git push -u origin main
 - **Port 8080 already in use** → change `server.port` in `application.properties`.
 
 
-**ScreenShots**
+## 7. ScreenShots
 
 ## Customer Registration Page
 
