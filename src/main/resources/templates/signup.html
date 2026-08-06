@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — RoadRescue</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+  <div class="navbar">
+    <a class="brand" th:href="@{/}">Road<span class="dot">Rescue</span></a>
+    <nav><a class="btn btn-outline" th:href="@{/login}">Log In</a></nav>
+  </div>
+
+  <div class="card auth-card">
+    <h2>Create your account</h2>
+    <p class="sub">Join RoadRescue as a customer or a helper.</p>
+
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <form th:action="@{/signup}" th:object="${user}" method="post">
+      <div class="role-toggle">
+        <label>
+          <input type="radio" name="role" value="CUSTOMER" checked onchange="toggleRoleFields()">
+          <span>I need help</span>
+        </label>
+        <label>
+          <input type="radio" name="role" value="HELPER" onchange="toggleRoleFields()">
+          <span>I'm a helper</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="fullName" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" required minlength="6">
+      </div>
+
+      <div id="customerFields">
+        <div class="form-group">
+          <label>Vehicle Number</label>
+          <input type="text" name="vehicleNumber" placeholder="e.g. TS09AB1234">
+        </div>
+      </div>
+
+      <div id="helperFields" style="display:none;">
+        <div class="form-group">
+          <label>Specialty</label>
+          <input type="text" name="specialty" placeholder="e.g. Towing, Battery, Flat Tire">
+        </div>
+        <div class="form-group">
+          <label>Years of Experience</label>
+          <input type="number" name="experienceYears" min="0">
+        </div>
+        <div class="form-group">
+          <label>Vehicle Number</label>
+          <input type="text" name="vehicleNumber" placeholder="Your service vehicle number">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+    </form>
+
+    <p class="auth-footer">Already have an account? <a th:href="@{/login}">Log in</a></p>
+  </div>
+
+  <script>
+    function toggleRoleFields() {
+      const isHelper = document.querySelector('input[name=role]:checked').value === 'HELPER';
+      document.getElementById('helperFields').style.display = isHelper ? 'block' : 'none';
+      document.getElementById('customerFields').style.display = isHelper ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helper Dashboard — RoadRescue</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+  <div class="navbar">
+    <a class="brand" th:href="@{/}">Road<span class="dot">Rescue</span></a>
+    <nav>
+      <span class="user-pill" th:text="${helper.fullName}">Name</span>
+      <a class="btn btn-outline" th:href="@{/logout}">Log Out</a>
+    </nav>
+  </div>
+
+  <div class="page-wrap">
+    <div class="dash-header">
+      <h1>Welcome, <span th:text="${helper.fullName}">Helper</span> 🔧</h1>
+      <span class="badge">
+        ⭐ <span th:text="${helper.averageRating}">0.0</span>
+        (<span th:text="${helper.ratingCount}">0</span> ratings)
+      </span>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;">Pending SOS Requests Nearby</h3>
+      <table class="list" th:if="${!pendingRequests.isEmpty()}">
+        <thead><tr><th>Time</th><th>Issue</th><th>Customer</th><th></th></tr></thead>
+        <tbody>
+          <tr th:each="req : ${pendingRequests}">
+            <td th:text="${#temporals.format(req.createdAt, 'dd MMM, hh:mm a')}"></td>
+            <td th:text="${req.issueDescription} ?: 'Not specified'"></td>
+            <td th:text="${req.customer.fullName}"></td>
+            <td>
+              <form th:action="@{'/helper/accept/' + ${req.id}}" method="post">
+                <button type="submit" class="btn btn-success" style="padding:6px 16px; font-size:0.8rem;">Accept</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-state" th:if="${pendingRequests.isEmpty()}">No pending requests right now. Check back soon.</div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <h3 style="margin-top:0;">Your Job History</h3>
+      <table class="list" th:if="${!history.isEmpty()}">
+        <thead><tr><th>Date</th><th>Customer</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr th:each="req : ${history}">
+            <td th:text="${#temporals.format(req.createdAt, 'dd MMM, hh:mm a')}"></td>
+            <td th:text="${req.customer.fullName}"></td>
+            <td><span class="status-pill" th:classappend="'status-' + ${req.status}" th:text="${req.status}"></span></td>
+            <td><a class="btn btn-dark" style="padding:6px 16px; font-size:0.8rem;" th:href="@{'/track/' + ${req.id}}">View</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-state" th:if="${history.isEmpty()}">No completed jobs yet.</div>
+    </div>
+  </div>
+</body>
+</html>

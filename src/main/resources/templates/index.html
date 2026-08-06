@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadRescue — Roadside Help, Fast</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+  <div class="navbar">
+    <div class="brand">Road<span class="dot">Rescue</span></div>
+    <nav>
+      <a class="btn btn-outline" th:href="@{/login}">Log In</a>
+      <a class="btn btn-primary" th:href="@{/signup}">Sign Up</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Broken down? <span>Help is on the way.</span></h1>
+    <p>RoadRescue connects stranded drivers with nearby mechanics and helpers in real time — live location tracking, in-app chat, and verified ratings, all in one place.</p>
+    <div class="cta">
+      <a class="btn btn-primary" th:href="@{/signup}">Get Help Now</a>
+      <a class="btn btn-outline" th:href="@{/signup}">Become a Helper</a>
+    </div>
+  </section>
+
+  <div class="features">
+    <div class="feature-card">
+      <div class="icon">📍</div>
+      <h3>Live Map Tracking</h3>
+      <p>Watch your helper's pin move toward you in real time, Uber-style, powered by Google Maps.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💬</div>
+      <h3>In-App Chat</h3>
+      <p>Message your helper directly the moment they accept your request — no need to share phone numbers.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⭐</div>
+      <h3>Ratings & Reviews</h3>
+      <p>Every helper is rated after each job, so you always know who you can trust on the road.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🚨</div>
+      <h3>One-Tap SOS</h3>
+      <p>Share your exact GPS location and issue in seconds — help finds you, not the other way around.</p>
+    </div>
+  </div>
+
+  <p class="footer-note">RoadRescue &middot; On-Road Vehicle Breakdown Help Assistance, reimagined for the web.</p>
+</body>
+</html>

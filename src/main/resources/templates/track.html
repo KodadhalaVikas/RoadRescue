@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Request — RoadRescue</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <div class="navbar">
+    <a class="brand" th:href="@{/}">Road<span class="dot">Rescue</span></a>
+    <nav>
+      <span class="user-pill" th:text="${sessionUserName}">Name</span>
+      <a class="btn btn-outline" th:href="@{/logout}">Log Out</a>
+    </nav>
+  </div>
+
+  <div class="page-wrap">
+    <div class="dash-header">
+      <h1>Request #<span th:text="${request.id}"></span></h1>
+      <span class="status-pill" th:classappend="'status-' + ${request.status}" th:text="${request.status}"></span>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <p style="margin:0 0 6px;"><strong>Customer:</strong> <span th:text="${request.customer.fullName}"></span> &middot; <span th:text="${request.customer.phone}"></span></p>
+      <p style="margin:0 0 6px;" th:if="${request.helper != null}"><strong>Helper:</strong> <span th:text="${request.helper.fullName}"></span> &middot; <span th:text="${request.helper.phone}"></span>
+        &middot; ⭐ <span th:text="${request.helper.averageRating}"></span></p>
+      <p style="margin:0; color:var(--muted);"><strong>Issue:</strong> <span th:text="${request.issueDescription} ?: 'Not specified'"></span></p>
+
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;" th:if="${request.helper != null}">
+        <form th:if="${sessionUserRole == 'HELPER' and request.status.name() == 'ACCEPTED'}" th:action="@{'/helper/status/' + ${request.id}}" method="post">
+          <input type="hidden" name="status" value="ARRIVED">
+          <button type="submit" class="btn btn-dark">Mark as Arrived</button>
+        </form>
+        <form th:if="${sessionUserRole == 'HELPER' and request.status.name() == 'ARRIVED'}" th:action="@{'/helper/status/' + ${request.id}}" method="post">
+          <input type="hidden" name="status" value="COMPLETED">
+          <button type="submit" class="btn btn-success">Mark Job Completed</button>
+        </form>
+      </div>
+
+      <div style="margin-top:14px;" th:if="${request.status.name() != 'COMPLETED' and request.status.name() != 'CANCELLED'}">
+        <button id="shareLocationBtn" type="button" class="btn btn-dark" onclick="toggleShareLocation()">📍 Share My Live Location</button>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <h3>Live Location <span style="font-weight:400; font-size:0.75rem; color:var(--muted);">(OpenStreetMap — free, no API key)</span></h3>
+        <div id="map"></div>
+      </div>
+      <div>
+        <h3>Chat</h3>
+        <div class="chat-box">
+          <div id="chatMessages" class="chat-messages">
+            <div th:each="msg : ${messages}" class="chat-bubble" th:classappend="${msg.senderId} == ${sessionUserId} ? 'chat-mine' : 'chat-theirs'">
+              <span class="chat-sender" th:text="${msg.senderName}"></span>
+              <p style="margin:0;" th:text="${msg.content}"></p>
+            </div>
+          </div>
+          <form class="chat-input-row" onsubmit="sendChatMessage(event)">
+            <input id="chatInput" type="text" placeholder="Type a message..." autocomplete="off">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;" th:if="${sessionUserRole == 'CUSTOMER' and request.status.name() == 'COMPLETED'}">
+      <div th:if="${existingRating == null}">
+        <h3 style="margin-top:0;">Rate your helper</h3>
+        <form th:action="@{'/rate/' + ${request.id}}" method="post">
+          <input type="hidden" id="starsInput" name="stars" value="5">
+          <div class="rating-widget" style="margin-bottom:16px;">
+            <span class="star star-filled" onclick="setRatingStars(1)">★</span>
+            <span class="star star-filled" onclick="setRatingStars(2)">★</span>
+            <span class="star star-filled" onclick="setRatingStars(3)">★</span>
+            <span class="star star-filled" onclick="setRatingStars(4)">★</span>
+            <span class="star star-filled" onclick="setRatingStars(5)">★</span>
+          </div>
+          <div class="form-group">
+            <label>Review (optional)</label>
+            <textarea name="review" rows="3" placeholder="How did it go?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit Rating</button>
+        </form>
+      </div>
+      <div th:if="${existingRating != null}">
+        <h3 style="margin-top:0;">Your Rating</h3>
+        <div class="stars-row">
+          <span th:each="i : ${#numbers.sequence(1, existingRating.stars)}">★</span>
+        </div>
+        <p th:text="${existingRating.review}"></p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:24px; color:var(--muted); font-size:0.85rem;"
+         th:if="${sessionUserRole != 'CUSTOMER' and request.status.name() == 'COMPLETED'}">
+      This job is completed. Only the customer who made the request can submit a rating.
+    </div>
+  </div>
+
+  <script th:inline="javascript">
+    const TRACK_REQUEST_ID = /*[[${request.id}]]*/ 0;
+    const TRACK_SESSION_USER_ID = /*[[${sessionUserId}]]*/ 0;
+    const TRACK_SESSION_ROLE = /*[[${sessionUserRole}]]*/ '';
+    const TRACK_SESSION_NAME = /*[[${sessionUserName}]]*/ '';
+    const TRACK_CUSTOMER_LAT = /*[[${request.customerLat}]]*/ 0;
+    const TRACK_CUSTOMER_LNG = /*[[${request.customerLng}]]*/ 0;
+    const TRACK_HELPER_LAT = /*[[${request.helper != null ? request.helper.currentLat : null}]]*/ null;
+    const TRACK_HELPER_LNG = /*[[${request.helper != null ? request.helper.currentLng : null}]]*/ null;
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+  <script th:src="@{/js/track.js}"></script>
+  <script>document.addEventListener('DOMContentLoaded', initMap);</script>
+</body>
+</html>
