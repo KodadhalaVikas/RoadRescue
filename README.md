@@ -137,7 +137,7 @@ If all of that works, the app is running correctly on your machine.
 - **Map tiles don't load** → OpenStreetMap needs an internet connection to fetch map tiles
   (they load from `tile.openstreetmap.org`); this is unrelated to your local MySQL/Java setup.
 - **A pin never moves** → click **📍 Share My Live Location** in that person's window and accept the browser's location permission prompt — location is only sent while sharing is turned on and that browser tab stays open.
-- **Port 8080 already in use** → change `server.port` in `application.properties`.
+- **Port 8080 already in use** → change `server.port` in `application.properties`
 
 
 ## 7. ScreenShots
